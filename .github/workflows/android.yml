@@ -1,8 +1,9 @@
 name: Android CI
 
 on:
+  workflow_dispatch:
   push:
-    branches: [ main ]  # غيّرها إلى master إذا كان الفرع عندك master
+    branches: [ main ]
   pull_request:
     branches: [ main ]
 
@@ -28,7 +29,7 @@ jobs:
         run: ./gradlew assembleDebug
 
       - name: Upload Debug APK
-        uses: actions/upload-artifact@8f3f0a64fd70a34f79da9e165d2f350ff02a4a7b
+        uses: actions/upload-artifact@v3
         with:
           name: debug-apk
           path: app/build/outputs/apk/debug/app-debug.apk
