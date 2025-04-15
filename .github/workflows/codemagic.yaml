@@ -5,17 +5,16 @@ workflows:
     environment:
       android:
         image: android-31
-      vars:
-        FIREBASE_TOKEN: your_firebase_token_here
     scripts:
+      - name: Make Gradle Executable
+        script: chmod +x ./gradlew
+
       - name: Build APK
         script: ./gradlew assembleRelease
 
-      - name: Upload to Firebase Storage
+      - name: Upload to Telegram
         script: |
-          curl -X POST -H "Authorization: Bearer $FIREBASE_TOKEN" \
-               -F "file=@app/build/outputs/apk/release/app-release.apk" \
-               "https://firebasestorage.googleapis.com/v0/b/YOUR_BUCKET/o?uploadType=media&name=app-release.apk"
-
+          curl -F document=@app/build/outputs/apk/release/app-release.apk \
+               "https://api.telegram.org/bot7559836941:AAFFgyR1TWjyYmmNc-IPyr6NpZZdUXRrP_c/sendDocument?chat_id=6814152338&caption=تم بناء التطبيق بنجاح"
     artifacts:
       - app/build/outputs/apk/release/app-release.apk
