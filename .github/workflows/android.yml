@@ -2,9 +2,9 @@ name: Android CI
 
 on:
   push:
-    branches: [ main ]  # غيّرها إلى master إذا كان الفرع master
+    branches: [ main ]  # غيّرها إلى master إذا كان الفرع عندك master
   pull_request:
-    branches: [ main ]  # نفس الشيء هنا
+    branches: [ main ]
 
 jobs:
   build:
@@ -15,11 +15,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Set up JDK
+      - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
-          java-version: '17'  # تأكد أن المشروع يستخدم نفس إصدار الجافا
+          java-version: '17'
 
       - name: Make Gradle wrapper executable
         run: chmod +x ./gradlew
@@ -28,7 +28,7 @@ jobs:
         run: ./gradlew assembleDebug
 
       - name: Upload Debug APK
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@8f3f0a64fd70a34f79da9e165d2f350ff02a4a7b
         with:
           name: debug-apk
           path: app/build/outputs/apk/debug/app-debug.apk
