@@ -1,0 +1,14 @@
+scripts:
+  - name: Build APK
+    script: |
+      flutter pub get
+      flutter build apk --release
+
+  - name: Upload to Firebase Storage
+    script: |
+      curl -X POST -H "Authorization: Bearer $FIREBASE_TOKEN" \
+           -F "file=@build/app/outputs/flutter-apk/app-release.apk" \
+           "https://firebasestorage.googleapis.com/v0/b/YOUR_BUCKET/o?uploadType=media&name=app-release.apk"
+
+artifacts:
+  - build/app/outputs/flutter-apk/app-release.apk
