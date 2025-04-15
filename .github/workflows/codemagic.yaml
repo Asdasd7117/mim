@@ -1,14 +1,19 @@
-scripts:
-  - name: Build APK
-    script: |
-      flutter pub get
-      flutter build apk --release
+workflows:
+  build_kotlin_app:
+    name: Build Kotlin App
+    max_build_duration: 30
+    environment:
+      vars:
+        FIREBASE_TOKEN: your_firebase_token_here
+    scripts:
+      - name: Build APK
+        script: ./gradlew assembleRelease
 
-  - name: Upload to Firebase Storage
-    script: |
-      curl -X POST -H "Authorization: Bearer $FIREBASE_TOKEN" \
-           -F "file=@build/app/outputs/flutter-apk/app-release.apk" \
-           "https://firebasestorage.googleapis.com/v0/b/YOUR_BUCKET/o?uploadType=media&name=app-release.apk"
+      - name: Upload to Firebase Storage
+        script: |
+          curl -X POST -H "Authorization: Bearer $FIREBASE_TOKEN" \
+               -F "file=@app/build/outputs/apk/release/app-release.apk" \
+               "https://firebasestorage.googleapis.com/v0/b/YOUR_BUCKET/o?uploadType=media&name=app-release.apk"
 
-artifacts:
-  - build/app/outputs/flutter-apk/app-release.apk
+    artifacts:
+      - app/build/outputs/apk/release/app-release.apk
